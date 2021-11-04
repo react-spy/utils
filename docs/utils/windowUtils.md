@@ -93,5 +93,70 @@ export default () => {
   );
 };
 ```
+### 窗口位置
+通过设置otherSpecs中的top、left，可以设置打开窗口的位置；如果不设置该参数，则默认垂直居中显示。如：
+```tsx
+/**
+ * title: 窗口位置
+ * transform: true
+ */
+import React from 'react';
+import { Button, Space } from 'antd';
+import { windowUtils } from '@react-spy/utils';
 
-More skills for writing demo: https://d.umijs.org/guide/basic#write-component-demo
+const handleOpenWindow = (top: string, left: string) => {
+  windowUtils.openNewWindow({
+    url: "http://www.baidu.com",
+    width: 500,
+    height: 300,
+    otherSpecs: {
+      top,
+      left,
+    },
+  });
+}
+
+export default () => {
+  return (
+    <Space>
+      <Button onClick={() => handleOpenWindow("100", "100")}>百 度【100,100】</Button>
+      <Button onClick={() => handleOpenWindow("100", "500")}>百 度【100,500】</Button>
+      <Button onClick={() => handleOpenWindow("400", "400")}>百 度【400,400】</Button>
+      <Button onClick={() => handleOpenWindow("0", "0")}>百 度【0,0】</Button>
+    </Space>
+  );
+};
+```
+更多案例请参考下方API文档。
+
+### API
+
+### openNewWindow
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| url | 跳转地址 | string |  |
+| width | 窗口宽度 | number |  |
+| height | 窗口高度 | number |  |
+| target | 打开窗口的方式 | _blank、_self、_parent、_top | _blank |
+| name | 窗口名称 | string |  |
+| otherSpecs | 其他参数 | OtherSpecs |  |
+
+### OtherSpecs
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| channelmode | 设置与当前窗口的通道模式 | "0" 、 "1" 、 "yes" 、 "no" | "0" |
+| directories | 设置与当前窗口的目录 | "0" 、 "1" 、 "yes" 、 "no" | "1" |
+| fullscreen | 设置与当前窗口的全屏模式 | "0" 、 "1" 、 "yes" 、 "no" | "0" |
+| width | 设置与当前窗口的宽度 | string | |
+| height | 设置与当前窗口的高度 | string |  |
+| top | 设置与当前窗口的顶部位置 | string |  |
+| left | 设置与当前窗口的左边位置 | string |  |
+| location | 设置与当前窗口的地址 | "0" 、 "1" 、 "yes" 、 "no" | "1" |
+| menubar | 设置与当前窗口的菜单栏 | "0" 、 "1" 、 "yes" 、 "no" | "1" |
+| resizable | 设置与当前窗口的大小 | "0" 、 "1" 、 "yes" 、 "no" | "1" |
+| scrollbars | 设置与当前窗口的滚动条 | "0" 、 "1" 、 "yes" 、 "no" | "1" |
+| status | 设置与当前窗口的状态栏 | "0" 、 "1" 、 "yes" 、 "no" | "1" |
+| titlebar | 设置与当前窗口的标题栏 | "0" 、 "1" 、 "yes" 、 "no" | "1" |
+| toolbar | 设置与当前窗口的工具栏 | "0" 、 "1" 、 "yes" 、 "no" | "1" |

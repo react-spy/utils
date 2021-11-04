@@ -34,13 +34,12 @@ const windowUtils = {
 
     // 打开一个水平垂直居中的新窗口---若不设置宽高，则显示全屏
     openNewWindow: ({ url, target, name, width, height, otherSpecs = {} }: IProps) => {
+        if (name && target) {
+            console.error("windowUtils.openNewWindow: name和target都存在,取name值");
+        }
 
         if (target && ["_self", "_parent", "_top"].includes(target)) {
             name = target;
-        }
-
-        if (name && target) {
-            console.error("windowUtils.openNewWindow: name和target都存在,取name值");
         }
 
         const sizeSpecs = width && height ? {

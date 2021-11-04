@@ -127,6 +127,38 @@ export default () => {
   );
 };
 ```
+```tsx
+/**
+ * title: 窗口宽高
+ * transform: true
+ */
+import React from 'react';
+import { Button, Space } from 'antd';
+import { windowUtils } from '@react-spy/utils';
+
+const numList = [300, 500, 800, 1200];
+
+const handleOpenWindow = (width: number, height: number) => {
+  windowUtils.openNewWindow({ url: "http://www.baidu.com", width, height });
+}
+
+export default () => {
+  return (
+    <Space>
+      {
+        numList.map(n => {
+          return (
+            <Button key={n} onClick={() => handleOpenWindow(n, n)}>百 度【{n}px,{n}px】</Button>
+          )
+        })
+      }
+    </Space>
+  );
+};
+```
+### 关闭窗口
+通过调用windowUtils.closeCurrentWindow()，可以关闭当前窗口。
+
 更多案例请参考下方API文档。
 
 ### API

@@ -1,29 +1,28 @@
 /**
- * title: 打开一个新窗口2
- * desc: 最简单的用法。
+ * title: umi-request 下载附件
+ * desc: 如果您项目中使用了 umi-request，可以在 umi-request 中使用 downloadFile 方法下载附件
  * transform: true
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'antd';
-import { windowUtils } from './utils';
-
+import { importUtils } from './utils';
 
 export default () => {
 
-  const [text, setText] = useState("模拟打开新窗口");
-
-  const handleOpenWindow = () => {
-    windowUtils.openNewWindow({
-      url: "http://www.baidu.com",
-      width: 500,
-      height: 300,
-      target: "_self",
+  const handleDownloadFile = () => {
+    importUtils.downloadFileForGet({
+      url: "/",
+      fileName: "附件名称",
+      fileSuffix: "xlsx",
+      params: {},
+      authorization: "xxxyyy",
+      onFileChange: () => { },
     });
   }
 
   return (
     <div>
-      <Button onClick={handleOpenWindow}>{text}</Button>
+      <Button onClick={handleDownloadFile} type="primary">下载附件</Button>
     </div>
   );
 };

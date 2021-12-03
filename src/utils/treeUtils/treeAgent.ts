@@ -30,7 +30,7 @@ class TreeAgent {
     protected nodeMap: { [key: string]: any }
     protected _preventSync: boolean;
 
-    constructor(tree: Array<any>, options: OptionProps) {
+    constructor(tree: Array<any>, options?: OptionProps) {
         this.options = {
             ...defaultOptions,
             ...(options || {})
@@ -60,9 +60,9 @@ class TreeAgent {
             };
             if (parent) {
                 const parentNode = nodeMap[_key(parent)]; // 获取父节点
-                currentNode.parent = parentNode;// 将父节点挂载到当前节点上
                 parentNode.children = parentNode.children || []; // 如果当前节点的父节点没有子节点，则创建一个子节点数组
-                parentNode.children.push(currentNode);
+                parentNode.children.push(JSON.parse(JSON.stringify(currentNode))); // 解除循环依赖
+                currentNode.parent = parentNode;// 将父节点挂载到当前节点上
             }
             nodeMap[_key(node)] = currentNode; // 将数据存储为 以 id 为 KEY 的 map 索引数据列
         }, options);
@@ -109,7 +109,7 @@ class TreeAgent {
     }
 
     // 获取当前节点
-    getNode(value: string | ((node: ObjProps) => {})) {
+    getNode(value: (string | number) | ((node: ObjProps) => {})) {
         if (typeof value === 'function') {
             return Object.values(this.nodeMap).find(value);
         } else {

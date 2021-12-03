@@ -1,6 +1,6 @@
 ---
   title: treeUtils
-  order: 1
+  order: -1
   nav:
      title: 工具集
      path: /utils
@@ -20,6 +20,7 @@
 import React, { useState } from 'react';
 import { Button, Space } from 'antd';
 import { treeUtils } from '@react-spy/utils';
+import ReactJson from 'react-json-view';
 
 const data = [
   { id: 1, name: "办公管理", pid: 0 },
@@ -48,7 +49,7 @@ export default () => {
       parentPropName: "pid",
       childrenPropName: "children",
       isRoot: (item: { [key: string]: any }) => {
-        return item.pid === 1; // 筛选pid为1的数据作为根节点,根据实际业务需求筛选数据
+        return item.id === 1; // 筛选id为1的数据作为根节点,根据实际业务需求筛选数据
       },
     });
     console.log(newList);
@@ -57,10 +58,15 @@ export default () => {
 
   return (
     <div>
-      <pre>{JSON.stringify(list, null, 2)}</pre>
+     <ReactJson
+        src={list}
+        collapsed={1}
+        displayDataTypes={false}
+        collapseStringsAfterLength={5}
+      />
       <Space>
         <Button onClick={transformList} type="primary">转化数据</Button>
-        <Button onClick={transformListForId} type="primary">转化数据(指定根节点)</Button>
+        <Button onClick={transformListForId} type="primary">转化数据(指定id=1为根节点)</Button>
         <Button onClick={() => setList(data)}>还 原</Button>
       </Space>
     </div>
@@ -77,6 +83,7 @@ export default () => {
 import React, { useState } from 'react';
 import { Button, Space } from 'antd';
 import { treeUtils } from '@react-spy/utils';
+import ReactJson from 'react-json-view';
 
 const defaultTreeList = [
   {
@@ -157,11 +164,127 @@ export default () => {
 
   return (
     <div>
-      <pre>{JSON.stringify(treeList, null, 2)}</pre>
+      <ReactJson
+        src={treeList}
+        collapsed={2}
+        displayDataTypes={false}
+        collapseStringsAfterLength={5}
+      />
       <Space>
           <Button onClick={sortFn1} type="primary">排 序(以id正序排序)</Button>
           <Button onClick={sortFn2} type="primary">排 序(以id倒序排序)</Button>
           <Button onClick={() => setTreeList(defaultTreeList)}>还 原</Button>
+      </Space>
+    </div>
+  );
+};
+```
+
+### TreeAgent 代理使用
+
+### 查询函数 
+```tsx
+/**
+ * title: 查询函数
+ * transform: true
+ */
+import React, { useState } from 'react';
+import { Button, Space } from 'antd';
+import { treeUtils } from '@react-spy/utils';
+import ReactJson from 'react-json-view';
+import './treeUtils.md.css';
+
+const treeList = [
+  {
+    "id": 1,
+    "name": "办公管理",
+    "pid": 0,
+    "children": [
+      {
+        "id": 2,
+        "name": "请假申请",
+        "pid": 1,
+        "children": [
+          {
+            "id": 4,
+            "name": "请假记录",
+            "pid": 2,
+            "children": null
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "出差申请",
+        "pid": 1,
+        "children": null
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "系统设置",
+    "pid": 0,
+    "children": [
+      {
+        "id": 6,
+        "name": "权限管理",
+        "pid": 5,
+        "children": [
+          {
+            "id": 7,
+            "name": "用户角色",
+            "pid": 6,
+            "children": null
+          },
+          {
+            "id": 8,
+            "name": "菜单设置",
+            "pid": 6,
+            "children": null
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const treeAgent = new treeUtils.TreeAgent(treeList, {
+  keyPropName: "id",
+  parentPropName: "pid",
+  childrenPropName: "children",
+});
+
+export default () => {
+
+  const [data, setData] = useState(treeList);
+
+  // 查询完整tree
+  const getTree = () => {
+    const newData = treeAgent.getTree();
+    console.log(newData);
+    setData(newData);
+  }
+
+  // 查询指定树节点信息
+  const getNode = () => {
+    const newData = treeAgent.getNode(5);
+    console.log(newData);
+    setData(newData);
+  }
+
+  return (
+    <div>
+      <ReactJson
+        src={data}
+        collapsed={2}
+        displayDataTypes={false}
+        collapseStringsAfterLength={5}
+      />
+      <Space>
+        <Button onClick={getTree} type="primary">查询完整树</Button>
+        <Button onClick={getNode} type="primary">查询id为5树节点</Button>
+        <Button onClick={() => setData(treeList)}>还 原</Button>
       </Space>
     </div>
   );

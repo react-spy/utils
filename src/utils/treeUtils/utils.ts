@@ -84,7 +84,7 @@ export const toTree = (
         for (let i = 0; i < flatData.length; i++) {
             const node = flatData[i];
             if (node[PARENT_KEY] === value) {
-                children.push(Object.assign(Object.create(null), node, { [CHILDREN_KEY]: process(node[KEY]) }));
+                children.push(Object.assign({}, node, { [CHILDREN_KEY]: process(node[KEY]) }));
             }
         }
         return children.length > 0 ? children : null;
@@ -92,7 +92,7 @@ export const toTree = (
 
     return flatData
         .filter(d => opts.isRoot(d, PARENT_KEY)) // 筛选出key为空的节点，也就是根节点；也可以根据isRoot函数来筛选数据作为根节点
-        .map(d => Object.assign(Object.create(null), d, { [CHILDREN_KEY]: process(d[KEY]) }));
+        .map(d => Object.assign({}, d, { [CHILDREN_KEY]: process(d[KEY]) }));
 }
 
 /**

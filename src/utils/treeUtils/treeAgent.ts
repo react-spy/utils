@@ -118,10 +118,10 @@ class TreeAgent {
         }
     }
 
-    // 获取子节点，options={directChildren:boolean}默认为false,directChildren为true代表是否直接子级
-    getChildren(key?: string, options?: { directChildren: boolean }) {
+    // 获取子节点，options={directChildren:boolean}默认为true,directChildren为true代表是否直接子级
+    getChildren(key?: string | number, options?: { directChildren: boolean }) {
         const { directChildren } = {
-            ...{ directChildren: false },
+            ...{ directChildren: true },
             ...(options || {}),
         }
         if (key) {
@@ -137,7 +137,7 @@ class TreeAgent {
     }
 
     // 获取父节点
-    getParent(key: string) {
+    getParent(key: string | number) {
         const node = this.getNode(key);
         if (!node) {
             return null;

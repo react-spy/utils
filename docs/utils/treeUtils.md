@@ -259,16 +259,43 @@ export default () => {
 
   const [data, setData] = useState(treeList);
 
-  // 查询完整tree
+  /**
+   * getTree -- 查询完整tree
+   */
   const getTree = () => {
     const newData = treeAgent.getTree();
     console.log(newData);
     setData(newData);
   }
 
-  // 查询指定树节点信息
+  /**
+   * getNode -- 查询指定树节点信息
+   * @param value -- 要查询的主键id或者函数()=>boolean
+   */
   const getNode = () => {
     const newData = treeAgent.getNode(5);
+    console.log(newData);
+    setData(newData);
+  }
+
+   /**
+   * getNode -- 查询子节点信息
+   * @param key? -- 要查询的主键id
+   * @param options? --配置项，options = { directChildren:boolean } 默认为true,directChildren为true代表是否直接子级
+   */
+  const getChildren = () => {
+    // const newData = treeAgent.getChildren(); // 如果要查询所有平铺数据，可以不指定
+    const newData = treeAgent.getChildren(5);
+    console.log(newData);
+    setData(newData);
+  }
+
+   /**
+   * getParent -- 查询父节点信息
+   * @param key -- 要查询的主键id
+   */
+  const getParent = () => {
+    const newData = treeAgent.getParent(8);
     console.log(newData);
     setData(newData);
   }
@@ -283,7 +310,9 @@ export default () => {
       />
       <Space>
         <Button onClick={getTree} type="primary">查询完整树</Button>
-        <Button onClick={getNode} type="primary">查询id为5树节点</Button>
+        <Button onClick={getNode} type="primary">查询id=5的树节点</Button>
+        <Button onClick={getChildren} type="primary">查询id=5树节点的子节点</Button>
+        <Button onClick={getParent} type="primary">查询id=8树节点的父节点</Button>
         <Button onClick={() => setData(treeList)}>还 原</Button>
       </Space>
     </div>

@@ -80,9 +80,23 @@ export default () => {
     setData(newData);
   }
 
-  // 查询指定树节点信息
+  /** 
+ * getNode -- 查询指定树节点信息
+ *@params value:要查询的主键id或者函数()=>boolean
+ **/
+  /**
+   * getNode -- 查询指定树节点信息
+   * @param value -- 要查询的主键id或者函数()=>boolean
+   */
   const getNode = () => {
     const newData = treeAgent.getNode(5);
+    console.log(newData);
+    setData(newData);
+  }
+
+  // 获取子节点信息
+  const getChildren = () => {
+    const newData = treeAgent.getChildren();
     console.log(newData);
     setData(newData);
   }
@@ -98,6 +112,7 @@ export default () => {
       <Space>
         <Button onClick={getTree} type="primary">查询完整树</Button>
         <Button onClick={getNode} type="primary">查询id为5树节点</Button>
+        <Button onClick={getChildren} type="primary">查询所有子节点</Button>
         <Button onClick={() => setData(treeList)}>还 原</Button>
       </Space>
     </div>

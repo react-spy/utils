@@ -11,7 +11,7 @@
 ## 代码演示
 
 
-### 将一维数组数据转化为树形数据
+## 将一维数组数据转化为树形数据
 ```tsx
 /**
  * title: 将一维数组数据转化为树形数据
@@ -74,7 +74,7 @@ export default () => {
 };
 ```
 
-### 自定义排序
+## 自定义排序
 ```tsx
 /**
  * title: 树形数据自定义排序
@@ -180,16 +180,16 @@ export default () => {
 };
 ```
 
-### TreeAgent 代理使用
+## TreeAgent 代理使用
 
-### 查询函数 
+## 查询函数 
 ```tsx
 /**
  * title: 查询函数
  * transform: true
  */
 import React, { useState } from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, Card } from 'antd';
 import { treeUtils } from '@react-spy/utils';
 import ReactJson from 'react-json-view';
 import './treeUtils.md.css';
@@ -279,13 +279,13 @@ export default () => {
   }
 
    /**
-   * getNode -- 查询子节点信息
+   * getChildren -- 查询子节点信息
    * @param key? -- 要查询的主键id
-   * @param options? --配置项，options = { directChildren:boolean } 默认为true,directChildren为true代表是否直接子级
+   * @param options? --配置项，options = { directChildren:boolean } 默认为false,directChildren为true代表是否直接子级
    */
   const getChildren = () => {
     // const newData = treeAgent.getChildren(); // 如果要查询所有平铺数据，可以不指定
-    const newData = treeAgent.getChildren(5);
+    const newData = treeAgent.getChildren(5,{ directChildren:true });
     console.log(newData);
     setData(newData);
   }
@@ -300,6 +300,15 @@ export default () => {
     setData(newData);
   }
 
+  /**
+   * getLeaves -- 查询叶子节点
+   */
+  const getLeaves = () => {
+    const newData = treeAgent.getLeaves();
+    console.log(newData);
+    setData(newData);
+  }
+
   return (
     <div>
       <ReactJson
@@ -308,37 +317,94 @@ export default () => {
         displayDataTypes={false}
         collapseStringsAfterLength={5}
       />
-      <Space>
-        <Button onClick={getTree} type="primary">查询完整树</Button>
-        <Button onClick={getNode} type="primary">查询id=5的树节点</Button>
-        <Button onClick={getChildren} type="primary">查询id=5树节点的子节点</Button>
-        <Button onClick={getParent} type="primary">查询id=8树节点的父节点</Button>
-        <Button onClick={() => setData(treeList)}>还 原</Button>
-      </Space>
+        <Card title="查询相关">
+          <Space>
+            <Button onClick={getTree} type="primary">查询完整树</Button>
+            <Button onClick={getNode} type="primary">查询id=5的树节点</Button>
+            <Button onClick={getChildren} type="primary">查询id=5树节点的子节点</Button>
+            <Button onClick={getParent} type="primary">查询id=8树节点的父节点</Button>
+            <Button onClick={getLeaves} type="primary">查询所有叶子节点</Button>
+            <Button onClick={() => setData(treeList)}>还 原</Button>
+          </Space>
+        </Card>
     </div>
   );
 };
 ```
 
 
-### API
+## API
 
-### toTree
+## toTree
 | 参数    | 说明     | 类型    | 默认值 |
-|---------|--------|---------|--------|
+| ------- | -------- | ------- | ------ |
 | data    | 一维数组 | Array   |        |
 | options | 配置项   | Options | 附件   |
 
-#### Options
+### Options
 | 参数             | 说明           | 类型   | 默认值   |
-|------------------|--------------|--------|----------|
+| ---------------- | -------------- | ------ | -------- |
 | keyPropName      | 主键字段名称   | string | key      |
 | parentPropName   | 父主键字段名称 | string | parent   |
 | childrenPropName | 下级字段名称   | string | children |
 
-### sortTree
+## sortTree
 | 参数     | 说明     | 类型            | 默认值                           |
-|----------|--------|-----------------|----------------------------------|
+| -------- | -------- | --------------- | -------------------------------- |
 | treeList | 树形数组 | Array           | [ ]                              |
 | sortFn   | 排序函数 | (a, b)=> number |                                  |
 | options  | 配置项   | object          | { childrenPropName: "children" } |
+
+
+## treeAgent
+### 查询相关
+
+### getTree
+```jsx | pure
+/**
+  * getTree -- 查询完整tree
+  */
+  const newData = treeAgent.getTree();
+  console.log(newData);
+```
+
+### getNode
+```jsx | pure
+/**
+  * getNode -- 查询指定树节点信息
+  * @param value -- 要查询的主键id或者函数()=>boolean
+  */
+  const newData = treeAgent.getNode(5);
+  console.log(newData);
+```
+
+### getChildren
+```jsx | pure
+/**
+  * getChildren -- 查询子节点信息
+  * @param key? -- 要查询的主键id
+  * @param options? --配置项，options = { directChildren:boolean } 默认为false,directChildren为true代表是否直接子级
+  */
+  // const newData = treeAgent.getChildren(); // 如果要查询所有平铺数据，可以不指定
+  const newData = treeAgent.getChildren(5,{ directChildren:true });
+  console.log(newData);
+```
+
+### getParent
+```jsx | pure
+/**
+  * getParent -- 查询父节点信息
+  * @param key -- 要查询的主键id
+  */
+  const newData = treeAgent.getParent(8);
+  console.log(newData);
+```
+
+### getLeaves
+```jsx | pure
+/**
+  * getLeaves -- 查询所有叶子节点
+  */
+   const newData = treeAgent.getLeaves();
+   console.log(newData);
+```

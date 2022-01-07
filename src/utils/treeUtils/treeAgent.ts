@@ -121,7 +121,7 @@ class TreeAgent {
     // 获取子节点，options={directChildren:boolean}默认为true,directChildren为true代表是否直接子级
     getChildren(key?: string | number, options?: { directChildren: boolean }) {
         const { directChildren } = {
-            ...{ directChildren: true },
+            ...{ directChildren: false },
             ...(options || {}),
         }
         if (key) {
@@ -154,7 +154,7 @@ class TreeAgent {
     // 获取同级节点
     getSiblings(key: string) {
         const level = this.getLevel(key)
-        return level === null ? [] : Object.values(this.nodeMap).filter(n => n.level === level && this._key(n.node) !== key);
+        return level === null ? [] : Object.values(this.nodeMap).filter(n => n.level == level && this._key(n.node) !== key);
     }
 
     /**
@@ -213,7 +213,7 @@ class TreeAgent {
 
     /* 树的操作函数 */
 
-    // 便利树，传入一个函数，函数的参数为当前节点
+    // 遍历树，传入一个函数，函数的参数为当前节点
     traverse(handler: (node: ObjProps) => void) {
         Object.values(this.nodeMap).forEach(handler)
     }
